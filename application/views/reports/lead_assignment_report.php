@@ -65,7 +65,7 @@
             </select>-->
             
             <div class="autocomplete" style="width:300px;">
-    <input id="myInput" type="text" name="myProject" placeholder="Project">
+    <input id="project" type="text" name="project" placeholder="Project">
   </div>
 
             <?php
@@ -157,6 +157,7 @@ $this->session->unset_userdata('report-project');
 				$(".alert-danger").show();
 		});
 	});
+
 
 
 function autocomplete(inp, arr) {
@@ -259,6 +260,6 @@ function autocomplete(inp, arr) {
 /*An array containing all the country names in the world:*/
 var countries = [<?php echo $string;?>];
 
-/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-autocomplete(document.getElementById("myInput"), countries);
+/*initiate the autocomplete function on the "project" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("project"), countries);
 </script>
