@@ -22,7 +22,7 @@
 	<div class="alert alert-danger" style="display: none;">
 		<strong>Error!</strong> Email not Sent.
 	</div>
-	<form method="GET" action="<?php echo base_url()?>admin/generate_report">
+	<form method="GET" action="<?php echo base_url()?>admin/generate_report" autocomplete="off">
 		<div class="col-sm-2 form-group">
 			<label for="emp_code">Dept:</label>
             <select  class="form-control"  id="dept" name="dept" >
