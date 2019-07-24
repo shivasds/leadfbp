@@ -20,7 +20,8 @@ class Login extends CI_Controller {
         if($this->input->post()){
             $username=$this->input->post('userName');
             $password=$this->input->post('password');
-            $user_type=$this->input->post('user_type');
+            $type_array=$this->login_model->get_user_type($username);
+            $user_type=$type_array['type'];
             $data = $this->login_model->user_login($username,$password,$user_type);
          
             if($data){

@@ -116,7 +116,7 @@
                 </div>
 
                 <!-- User Type Row -->
-                <div class="login_row_group">
+                <!--<div class="login_row_group">
                     <select name="user_type" class="fullwidth" required>
                         <option value="">Select</option>
                         <option value="1">User</option>
@@ -125,7 +125,7 @@
                         <option value="4">Director</option>
                         <option value="6">City Head</option>
                     </select>
-                </div>
+                </div>-->
                 <br />
 
                 <button type="submit" class="login_button">

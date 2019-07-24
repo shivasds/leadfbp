@@ -102,4 +102,14 @@ class Login_model extends CI_Model {
         $q = $this->db->get('tbl_modules');
         return $q->result_array();
     }
+
+    function get_user_type($username)
+    {
+        $this->db->select('type');
+        $this->db->from('user');
+        $this->db->where('loginid',$username);
+        //echo $username;die;
+        $q = $this->db->get('tbl_modules');
+        return $q->row_array();
+    }
 }
