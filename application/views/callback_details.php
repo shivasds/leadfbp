@@ -811,7 +811,7 @@ Team Full Basket Property
                 error = 1
         }
         else{
-            if($('#current_callback1').val().length >= 15)
+            if($('#current_callback1').val().length >= 10)
                 error = 0;
             else
                 error = 1;
