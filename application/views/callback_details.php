@@ -694,9 +694,9 @@ Team Full Basket Property
 </div>
 
 <script>
-    $(function () {
+   /* $(function () {
 $('#current_callback1').keydown(function (e) {
-if (e.ctrlKey || e.altKey) {
+if (e.ctrlKey || e.altKey || ) {
 e.preventDefault();
 } else {
 var key = e.keyCode;
@@ -705,7 +705,7 @@ e.preventDefault();
 }
 }
 });
-});
+});*/
 	$(function(){
         $('#site_visit_data .sbmit').on('click', function() {
             var data = {
