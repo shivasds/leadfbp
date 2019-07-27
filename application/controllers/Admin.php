@@ -2006,16 +2006,65 @@ class Admin extends CI_Controller {
 		$this->common_model->save_online_leads_99acres(json_decode(json_encode($data['lead']), True));
 		$data['name'] ="more";
 		$data['heading'] ="99 Acres Online Callbacks";
-		$data['leads'] = $this->common_model->get_online_leads('99acres');
-		if (empty($data['leads'])) {
+		$where="";
+		$searchVal='';
+
+		if($this->input->post()){
+			$project=$this->input->post('project');
+			$searchVal = trim($this->input->post('srxhtxt'));
+			$fromdate= $this->input->post('fromDate');
+			$todate=$this->input->post('toDate');
+		if($project!==null){
+				$project=trim($project);
+				$this->session->set_userdata("project",$project);
+				if($project)
+					$where.=" (project='$project') ";
+			}
+			if($searchVal !=null ){
+				$this->session->set_userdata('SRCHTXT', $searchVal);	
+				if(($searchVal&$project & $fromdate & $todate))			
+					$where .="and  (name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				elseif ($searchVal& $fromdate & $todate) {
+				$where .=" 	(name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				}
+				elseif($searchVal&&$project)
+					$where .="and( name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				elseif($searchVal)
+				{
+					$where .="( name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				}
+
+			}
+			if($fromdate & $todate & $project)
+			{
+				//$where.="lead_date >= $fromdate and lead_date <= $todate";
+				$where.="and CAST(lead_date AS date) BETWEEN '$fromdate' and '$todate'";
+			}
+			
+		
+		//echo $srxhtxt;die;
+				
+			//echo $where;		
+		}
+		else{
+				if($this->session->userdata('SRCHTXT')){
+				$searchVal = $this->session->userdata('SRCHTXT');
+				$where .="(name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+
+			}
+		}
+		
+		$data['leads'] = $this->common_model->get_online_leads('99acres',$where);
+		//echo $this->db->last_query();die;
+		/*if (empty($data['leads'])) {
 			$data['name'] = "index";
      echo "<script>alert('no leads in 99acre');</script>";
      $this->load->view('admin/home',$data);
 		}
 		else
-		{
+		{*/
 		$this->load->view('admin/online_leads',$data);
-		}
+		//}
 		//$data['projects']= $this->common_model->all_active_projects();
 		
 	}
@@ -2026,7 +2075,54 @@ class Admin extends CI_Controller {
 		$data['name'] ="more";
 		$data['heading'] ="Magic Bricks Online Callbacks";
 		$this->common_model->save_online_leads($leadsdata_magicbrick);
-		$data['leads'] = $this->common_model->get_online_leads('Magicbricks');
+				$where="";
+		$searchVal='';
+
+		if($this->input->post()){
+			$project=$this->input->post('project');
+			$searchVal = trim($this->input->post('srxhtxt'));
+			$fromdate= $this->input->post('fromDate');
+			$todate=$this->input->post('toDate');
+		if($project!==null){
+				$project=trim($project);
+				$this->session->set_userdata("project",$project);
+				if($project)
+					$where.=" (project='$project') ";
+			}
+			if($searchVal !=null ){
+				$this->session->set_userdata('SRCHTXT', $searchVal);	
+				if(($searchVal&$project & $fromdate & $todate))			
+					$where .="and  (name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				elseif ($searchVal& $fromdate & $todate) {
+				$where .=" 	(name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				}
+				elseif($searchVal&&$project)
+					$where .="and( name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				elseif($searchVal)
+				{
+					$where .="( name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+				}
+
+			}
+			if($fromdate & $todate & $project)
+			{
+				//$where.="lead_date >= $fromdate and lead_date <= $todate";
+				$where.="and CAST(lead_date AS date) BETWEEN '$fromdate' and '$todate'";
+			}
+			
+		
+		//echo $srxhtxt;die;
+				
+			//echo $where;		
+		}
+		else{
+				if($this->session->userdata('SRCHTXT')){
+				$searchVal = $this->session->userdata('SRCHTXT');
+				$where .="(name like '%$searchVal%' or phone like'%$searchVal%' or email like '%$searchVal%' or project like'%$searchVal%')";
+
+			}
+		}
+		$data['leads'] = $this->common_model->get_online_leads('Magicbricks',$where);
 		//$array = json_decode(json_encode($data['leads']), True);
 		//echo $array[0]['project'];die;
 		//if(isexist_project($array[0]['project']))
@@ -2048,6 +2144,20 @@ class Admin extends CI_Controller {
 	}
 	public function commonfloor_leads()
 	{
+
+	}
+	public function delete_online_lead()
+	{
+		//echo "<script>alert('deletting macha');location.href='http://localhost:8082/admin/magicbricks_leads'</script>";
+		$lead_id =  $this->uri->segment(3);
+		$controller_name= $this->uri->segment(4);
+		$lead_id = array('id'=>$lead_id);
+		$bool = $this->common_model->updateWhere($lead_id);
+		if($bool)
+		{
+			echo "<script>location.href='".base_url().'admin/'.$controller_name."';</script>";
+		}
+
 
 	}
 

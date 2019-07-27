@@ -44,7 +44,9 @@
 </style>
 <div class="container">
 	<?php
+
 	$source_name=$this->uri->segment(2);
+	$lead_controller=$source_name;
 	if($source_name=='magicbricks_leads')
 		$source_name='Magicbricks';
 	elseif ($source_name=='acres99_leads') {
@@ -58,11 +60,51 @@
 			$today_leads=$this->common_model->lead_count($source_name,$today);
 			$Yestreday_leads= $this->common_model->lead_count($source_name,$yesterday);
 			$total_lead_count=$this->common_model->total_lead_count($source_name);
+			$this->session->unset_userdata('SRCHTXT');
 	?>
+
 	<div class="page-header">
 		<h1><?= $heading; ?></h1>
 	</div>
 	<br>
+	<form method="POST" id="search_form" autocomplete="off">
+       <div class="col-md-2 form-group">
+            <label for="emp_code">Project:</label>
+            <select  class="form-control"  id="project" name="project" >
+                <option value="">Select</option>
+                <?php $projects= $this->common_model->all_active_projects(); 
+                foreach( $projects as $project){ ?>
+                    <option value="<?php echo $project->name ?>" <?php if(($this->session->userdata("project"))==$project->name) echo 'selected' ?>><?php echo $project->name ?></option>
+                <?php }?>              
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>Search:</label>
+                <input type="text" class="form-control" name="srxhtxt" id="srxhtxt" placeholder="name / Email / Contact Number / Project" value="<?= ($this->session->userdata('SRCHTXT')) ? $this->session->userdata('SRCHTXT') : '' ?>" />
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>From Date:</label>
+                <input type="text" class="form-control" name="fromDate" id="from" placeholder="From Date" value="" />
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>To Date:</label>
+                <input type="text" class="form-control" name="toDate" id="to" placeholder="To Date" value="" />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-sm-6">
+            <button class="btn btn-info btn-block" id="admin-reset"onclick="reset_data()" >Reset</button>
+        </div>
+        <div class="col-sm-6">
+            <button type="submit" id="admin-search" class="btn btn-success btn-block">Search</button>
+        </div>
+    </form>
+    <br>
 	<table  class="table table-striped table-bordered dt-responsive" cellspacing="0" width="50">
 		<tr>
 			<th>Today's Leads :</th>
@@ -81,6 +123,7 @@
 			<thead>
 				<tr>
 					<th>Select</th>
+					<th>Delete</th>
 					<th>Source</th>
 					<th>Contact Name</th>
 					<th>Contact No</th>
@@ -96,6 +139,7 @@
 					foreach ($leads as $lead) { ?>
 						<tr id="row_<?= $lead->id ?>">
 							<td><input type='checkbox' name='check[]' class='check' value="<?= $lead->id ?>"></td>
+							<td><button type="button" class="btn btn-success" onclick="window.location='<?php echo site_url("admin/delete_online_lead/".$lead->id.'/'.$lead_controller);?>'">Delete Lead</button></td>
 							<td><?= $lead->source ?></td>
 							<td><?= $lead->name ?></td>
 							<td><?= $lead->phone ?></td>
@@ -121,6 +165,7 @@
 				<?php } ?>
 			</tbody>
 		</table>
+
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 				<div class="page-header text-center">
@@ -223,6 +268,12 @@
 
 <script type="text/javascript">
 
+    function reset_data(){
+      
+        $('#project').val("");
+		$('#srxhtxt').val("");
+        $("#search_form").submit();
+    }
 	/*$(".main-from").submit(function(e){
 		e.preventDefault();
 		$(".se-pre-con").show();
@@ -260,6 +311,15 @@
 		}
 
 	});
+	$(function(){
+        $("#to").datepicker({ dateFormat: 'yy-mm-dd' });
+        $("#from").datepicker({ dateFormat: 'yy-mm-dd' }).bind("change",function(){
+            var minValue = $(this).val();
+            minValue = $.datepicker.parseDate("yy-mm-dd", minValue);
+            minValue.setDate(minValue.getDate()+1);
+            $("#to").datepicker( "option", "minDate", minValue );
+        })
+    });
 </script>
 
 

@@ -1081,7 +1081,7 @@ $list_id=implode(',', $ids);
            unset($clause['cb.dept_id']);
            if($this->session->userdata('user_type')=='City_head')
            {
-   $ids=array();
+           $ids=array();
           foreach ($this->session->userdata('user_ids') as $id) {
              // echo $id->id;
               $ids[]=$id->id;
@@ -1147,9 +1147,9 @@ $list_id=implode(',', $ids);
             {
                 foreach ($this->session->userdata('user_ids') as $id) {
 // echo $id->id;
-$ids[]=$id->id;
-}
-$list_id=implode(',', $ids);
+            $ids[]=$id->id;
+            }
+            $list_id=implode(',', $ids);
             $this->db->where("cb.user_id in(".$list_id.")");
             $this->db->where(['ced.flag'=>1, 'ced.type'=>1]);
             }
@@ -1186,9 +1186,7 @@ $list_id=implode(',', $ids);
         $this->db->where('date_added<=',date('Y-m-d').' 23:59:59');
         $this->db->where('user_id',$id);
         $q = $this->db->get(); 
-          
         return $q->row_array();
-
     }
 
 }

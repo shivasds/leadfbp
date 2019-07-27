@@ -54,6 +54,10 @@ $baseURL = ($this->session->userdata('user_type') == 'admin') ? base_url('admin'
                                 }
                                 else
                                 {
+                                   echo '<li><a href="'.$baseLink.'">'.$cModule['module'].'</a></li>';
+                                }
+                                if($cModule['module']== 'Online Lead Report')
+                                {
                                 echo '<li><a href="'.$baseLink.'">'.$cModule['module'].'</a></li>';
                                 }
                         }

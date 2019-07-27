@@ -332,16 +332,18 @@ class Common_model extends MY_Model {
         $this->db->delete('tbl_privilege', $clause);
         return true;
     }
-     function get_online_leads($lead_source)
+     function get_online_leads($lead_source,$where)
      {
         $d=0;
+        //echo $where;die;
         $this->db->select()
             ->from('online_leads')
             ->where('source',$lead_source)
             ->where('saved',$d);
-
-           // ->order_by('name','asc');
+            if($where)
+            $this->db->where($where,null,false);
         $query=$this->db->get();
+       //echo  $this->db->last_query();die;
         return $query->result();
      }
 
@@ -446,13 +448,15 @@ class Common_model extends MY_Model {
 
          function updateWhere($where,$data=1,$table_name='online_leads')
             {
+
               foreach ($where as $leadid) {
+               // print_r($where);die;
                 $this->db->set('saved',1);
                 $this->db->where('id', $where['id']);
-                $this->db->update('online_leads');
-                 
+                $this->db->update('online_leads');       
             }
-        }
+            return true;
+            }
        
 
         function getsourceId($sourcename)
