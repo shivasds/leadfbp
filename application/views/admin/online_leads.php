@@ -134,7 +134,7 @@
 		
 	</table>
 
-
+<?php } ?>
 	
 	<form method="POST" class="main-from" action="<?php echo base_url()?>admin/save_online_leads">
 		
@@ -185,7 +185,7 @@
 			</tbody>
 		</table>
 
-<?php } ?>
+
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 				<div class="page-header text-center">
