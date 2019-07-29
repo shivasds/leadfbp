@@ -521,5 +521,57 @@ class Common_model extends MY_Model {
                          return $query->row_array();
 
         }
+        function search_online_leads($fromdate,$todate,$project,$searchVal,$lead_source,$where)
+        {
+            if($project&&$searchVal!='')
+            {
+            $d=0;
+       $this->db->select('count(*) as count')
+
+            ->from('online_leads')
+            ->where('source',$lead_source)
+            ->where('saved',$d)
+            ->where('project',$project)
+            ->where("project like '%$searchVal%'")
+            ->or_where("name like '%$searchVal%'")
+            ->or_where("phone like '%$searchVal%'")
+            ->or_where("email like '%$searchVal%'");
+            if($where)
+            $this->db->where($where,null,false);
+        $query=$this->db->get();
+        //echo $this->db->last_query();die;
+        return $query->row_array();
+            }
+            elseif ($project!='') {
+           $d=0;
+        $this->db->select('count(*) as count ')
+   
+            ->from('online_leads')
+            ->where('source',$lead_source)
+            ->where('saved',$d)
+            ->where('project',$project);
+            if($where)
+            $this->db->where($where,null,false);
+        $query=$this->db->get();
+        return $query->row_array();
+            }
+            elseif($searchVal!='')
+            {
+            $d=0;
+       $this->db->select('count(*) as count')
+            ->from('online_leads')
+            ->where('source',$lead_source)
+            ->where('saved',$d)
+            ->where("project like '%$searchVal%'")
+            ->or_where("name like '%$searchVal%'")
+            ->or_where("phone like '%$searchVal%'")
+            ->or_where("email like '%$searchVal%'");
+            if($where)
+            $this->db->where($where,null,false);
+        $query=$this->db->get();
+        return $query->row_array();
+            }
+
+        }
 
        }

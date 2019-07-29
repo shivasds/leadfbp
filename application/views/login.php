@@ -116,8 +116,15 @@
                 </div>
 
                 <!-- User Type Row -->
-                <!--<div class="login_row_group">
-                    <select name="user_type" class="fullwidth" required>
+                <script type="text/javascript">
+                $(document).ready(function(){
+                $(".fullwidth").change(function(){  
+                $(this).attr("disabled", "disabled");
+                });
+                });
+                </script>
+                <div class="login_row_group"> 
+                    <select name="user_type"  id="jumpMenu"  class="fullwidth" required>
                         <option value="">Select</option>
                         <option value="1">User</option>
                         <option value="2">Manager</option>
@@ -125,7 +132,7 @@
                         <option value="4">Director</option>
                         <option value="6">City Head</option>
                     </select>
-                </div>-->
+                </div>
                 <br />
 
                 <button type="submit" class="login_button">

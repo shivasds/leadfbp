@@ -2008,7 +2008,11 @@ class Admin extends CI_Controller {
 		$data['heading'] ="99 Acres Online Callbacks";
 		$where="";
 		$searchVal='';
-
+		$project='';
+		$fromdate='';
+		$todate='';
+		$lead_source='99acres';
+		$data['search']=0;
 		if($this->input->post()){
 			$project=$this->input->post('project');
 			$searchVal = trim($this->input->post('srxhtxt'));
@@ -2037,14 +2041,11 @@ class Admin extends CI_Controller {
 			}
 			if($fromdate & $todate & $project)
 			{
-				//$where.="lead_date >= $fromdate and lead_date <= $todate";
 				$where.="and CAST(lead_date AS date) BETWEEN '$fromdate' and '$todate'";
 			}
-			
-		
-		//echo $srxhtxt;die;
-				
-			//echo $where;		
+			$data['fromdate']=$fromdate;
+			$data['todate']=$todate;
+				$data['search'] = $this->common_model->search_online_leads($fromdate,$todate,$project,$searchVal,$lead_source,$where);	
 		}
 		else{
 				if($this->session->userdata('SRCHTXT')){
@@ -2054,8 +2055,8 @@ class Admin extends CI_Controller {
 			}
 		}
 		
-		$data['leads'] = $this->common_model->get_online_leads('99acres',$where);
-		//echo $this->db->last_query();die;
+		$data['leads'] = $this->common_model->get_online_leads($lead_source,$where);
+		
 		/*if (empty($data['leads'])) {
 			$data['name'] = "index";
      echo "<script>alert('no leads in 99acre');</script>";
@@ -2075,8 +2076,13 @@ class Admin extends CI_Controller {
 		$data['name'] ="more";
 		$data['heading'] ="Magic Bricks Online Callbacks";
 		$this->common_model->save_online_leads($leadsdata_magicbrick);
-				$where="";
+		$where="";
 		$searchVal='';
+		$project='';
+		$fromdate='';
+		$todate='';
+		$lead_source='Magicbricks';
+		$data['search']=0;
 
 		if($this->input->post()){
 			$project=$this->input->post('project');
@@ -2109,11 +2115,9 @@ class Admin extends CI_Controller {
 				//$where.="lead_date >= $fromdate and lead_date <= $todate";
 				$where.="and CAST(lead_date AS date) BETWEEN '$fromdate' and '$todate'";
 			}
-			
-		
-		//echo $srxhtxt;die;
-				
-			//echo $where;		
+			$data['fromdate']=$fromdate;
+			$data['todate']=$todate;
+		$data['search'] = $this->common_model->search_online_leads($fromdate,$todate,$project,$searchVal,$lead_source,$where);		
 		}
 		else{
 				if($this->session->userdata('SRCHTXT')){
@@ -2599,5 +2603,19 @@ class Admin extends CI_Controller {
 	 		$this->load->view("admin/exceldownload",$data);
 
 	 		}
+
+	 public function online_lead_report()
+	 {
+	 	$data['name']='admin';
+	 	$data['heading'] = 'Online Lead Reports';
+	 if($this->input->post())
+	 {
+
+	 }
+	 else
+	 {
+	 	$this->load->view('admin/online_lead_report',$data);
+	 }
+	 }
 
 }

@@ -87,7 +87,7 @@
         <div class="col-sm-2">
             <div class="form-group">
                 <label>From Date:</label>
-                <input type="text" class="form-control" name="fromDate" id="from" placeholder="From Date" value="" />
+                <input type="text" class="form-control" name="fromDate" id="from" placeholder="From Date" value="" required="required" />
             </div>
         </div>
         <div class="col-sm-2">
@@ -118,6 +118,24 @@
 		</tr>
 		
 	</table>
+<?php	if($search['count']!=0)
+{?>
+<table  class="table table-striped table-bordered dt-responsive" cellspacing="0" width="50">
+		<tr>
+			<th>From Date</th>
+			<th>To Date :</th>
+			<th>Lead Count :</th>
+		</tr>
+		<tr>
+			<td><?= $fromdate?></td>
+			<td><?= $todate?></td>
+			<td><?= $search['count']?></td>
+		</tr>
+		
+	</table>
+
+
+<?php } ?>
 	<form method="POST" class="main-from" action="<?php echo base_url()?>admin/save_online_leads">
 		<table id="example" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
 			<thead>

@@ -52,7 +52,7 @@ $baseURL = ($this->session->userdata('user_type') == 'admin') ? base_url('admin'
         </ul></li>
                                      <?php
                                 }
-                                else
+                                if($cModule['module']== 'All Leads')
                                 {
                                    echo '<li><a href="'.$baseLink.'">'.$cModule['module'].'</a></li>';
                                 }
