@@ -134,9 +134,24 @@
 		
 	</table>
 
-
-<?php } ?>
+<!--
+<?php }
+table(); ?>
+<script type="text/javascript">
+var doc = document.getElementById('iframe').contentWindow.document;
+doc.open();
+doc.write('<?php  table(); ?>');
+doc.close();
+</script>
+<iframe id="iframe" width="100%">	-->
+	
 	<form method="POST" class="main-from" action="<?php echo base_url()?>admin/save_online_leads">
+		<?php 
+		table();
+	 function table()
+	{
+
+	?>
 		<table id="example" class="table table-striped table-bordered dt-responsive" cellspacing="0" width="100%">
 			<thead>
 				<tr>
@@ -184,6 +199,7 @@
 			</tbody>
 		</table>
 
+<?php } ?>
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
 				<div class="page-header text-center">
@@ -281,6 +297,8 @@
 			</div>
 		</div>
 	</form>
+
+	</iframe>
 </div>
 
 

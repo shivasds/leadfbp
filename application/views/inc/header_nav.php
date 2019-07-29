@@ -52,8 +52,11 @@ $baseURL = ($this->session->userdata('user_type') == 'admin') ? base_url('admin'
         </ul></li>
                                      <?php
                                 }
-                                if($cModule['module']== 'All Leads')
+                               else
                                 {
+                                	if($cModule['module']=='Online Lead Report')
+                                		echo '<li><a href="#">'.$cModule['module'].'</a></li>';
+                                	else
                                    echo '<li><a href="'.$baseLink.'">'.$cModule['module'].'</a></li>';
                                 }
                                /* if($cModule['module']== 'Online Lead Report')
