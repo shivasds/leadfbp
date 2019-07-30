@@ -2153,15 +2153,18 @@ class Admin extends CI_Controller {
 		$cdata=array();
 		$l_data=array();
 		$a=0;
-		for ($i=0; $i <sizeof($output) ; $i++) { 
-			foreach ($output["cf_lead"][$i] as $key => $value) {
-			$cdata[$key]="$value";
+		for ($k=0; $k < count($output["cf_lead"]) ; $k++) { 
+			foreach ($output["cf_lead"] as $key => $value) {
+			$cdata[$key]= $value;
 		}
-		$l_data[]=$cdata;
 		}
+		$cdata = json_decode(json_encode($cdata), true);
+
+	//print_r($cdata);die;
+
 		$data['name'] ="more";
 		$data['heading'] ="Commonfloor Online Callbacks";
-		$this->common_model->save_commonfloor_online_leads($l_data);
+		$this->common_model->save_commonfloor_online_leads($cdata,count($output["cf_lead"]));
 		$where="";
 		$searchVal='';
 		$project='';

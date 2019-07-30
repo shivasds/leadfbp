@@ -445,10 +445,19 @@ class Common_model extends MY_Model {
 
             }
         }
-        function save_commonfloor_online_leads($data)
+        function save_commonfloor_online_leads($datalead,$numrows)
         {
+           error_reporting(0);
             $source="Commonfloor";
-            foreach ($data as $data) {
+           // print_r($datalead);
+           // echo $numrows;echo $datalead[0]['contact_mobile'];
+            //die;
+            $numrows=$numrows-1;
+            //echo $numrows;die;
+            $a=0;
+            while ($numrows>=$a) {
+               
+            foreach ($datalead as $data) {
                
                         $phone =$data['contact_mobile'];
                         $name=$data['contact_name'];
@@ -486,6 +495,11 @@ class Common_model extends MY_Model {
                
                
             }
+
+                $a++;
+             //  $numrows--;
+            }
+           
         }
 
          function updateWhere($where,$data=1,$table_name='online_leads')
