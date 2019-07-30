@@ -445,6 +445,48 @@ class Common_model extends MY_Model {
 
             }
         }
+        function save_commonfloor_online_leads($data)
+        {
+            $source="Commonfloor";
+            foreach ($data as $data) {
+               
+                        $phone =$data['contact_mobile'];
+                        $name=$data['contact_name'];
+                        $email=$data['contact_email'];
+                        $projectname=$data['project_or_locality_name'];
+                        $notes=$data['details'];
+                        $lead_date=date("Y-m-d", strtotime($data['shared_on']) );
+                        $project_id=$data['seq_id'];
+
+                        
+
+                         $query1="select count(*) as count from online_leads where phone='$phone'";
+                            $usercount=  $this->db->query($query1);
+                            if ( $usercount->num_rows() > 0 )
+                             {
+                              $row = $usercount->row_array();
+                              $userscount= $row['count'];
+                              {
+                                $bid=216;
+                                  if($userscount<=0 && $name!='')
+                                  {
+                                    if(!empty($projectname))
+                                    $this->insert_newproject($projectname,$bid);
+                                else
+                                    $this->insert_newproject('commonfloor',$bid);
+                              $query="insert into online_leads(source,name,phone,email,project,leadid,notes,lead_date,project_id) values('$source','$name','$phone','$email','$projectname','$project_id','$notes','$lead_date','$project_id')";
+                                $this->db->query($query);
+
+                                  }
+                              }
+                             }
+                            
+
+
+               
+               
+            }
+        }
 
          function updateWhere($where,$data=1,$table_name='online_leads')
             {

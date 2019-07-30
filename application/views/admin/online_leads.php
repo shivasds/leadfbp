@@ -50,7 +50,10 @@
 	if($source_name=='magicbricks_leads')
 		$source_name='Magicbricks';
 	elseif ($source_name=='acres99_leads') {
-		$source_name='99acres';
+		
+	}
+	elseif ($source_name=='commonfloor_leads') {
+		$source_name='commonfloor';
 	}
 			$today_leads="";
 			$Yestreday_leads="";
@@ -61,6 +64,7 @@
 			$Yestreday_leads= $this->common_model->lead_count($source_name,$yesterday);
 			$total_lead_count=$this->common_model->total_lead_count($source_name);
 			$this->session->unset_userdata('SRCHTXT');
+			$this->session->unset_userdata('project');
 	?>
 
 	<div class="page-header">
@@ -74,7 +78,7 @@
                 <option value="">Select</option>
                 <?php $projects= $this->common_model->all_active_projects(); 
                 foreach( $projects as $project){ ?>
-                    <option value="<?php echo $project->name ?>" <?php if(($this->session->userdata("project"))==$project->name) echo 'selected' ?>><?php echo $project->name ?></option>
+                    <option value="<?php echo $project->name ?>" <?php //if(($this->session->userdata("project"))==$project->name) echo 'selected' ?>><?php echo $project->name ?></option>
                 <?php }?>              
             </select>
         </div>
@@ -87,7 +91,7 @@
         <div class="col-sm-2">
             <div class="form-group">
                 <label>From Date:</label>
-                <input type="text" class="form-control" name="fromDate" id="from" placeholder="From Date" value="" required="required" />
+                <input type="text" class="form-control" name="fromDate" id="from" placeholder="From Date" value=""  />
             </div>
         </div>
         <div class="col-sm-2">
@@ -147,7 +151,7 @@
 					<th>Contact Name</th>
 					<th>Contact No</th>
 					<th>Email</th>
-					<th>Project</th>
+					<th><?php if($source_name=='commonfloor') echo'Project / Area';else echo 'Project'; ?></th>
 					<th>Lead Id</th>
 					<th>Notes</th>
 					<th>Date</th>

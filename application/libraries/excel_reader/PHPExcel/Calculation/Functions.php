@@ -567,6 +567,7 @@ class PHPExcel_Calculation_Functions {
 
 		if (($value === NULL) || (is_float($value)) || (is_int($value))) {
 				return 1;
+
 		} elseif(is_bool($value)) {
 				return 4;
 		} elseif(is_array($value)) {
@@ -579,6 +580,7 @@ class PHPExcel_Calculation_Functions {
 			}
 			return 2;
 		}
+
 		return 0;
 	}	//	function TYPE()
 
