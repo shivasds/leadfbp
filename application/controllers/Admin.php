@@ -2166,18 +2166,21 @@ class Admin extends CI_Controller {
 	}
 
 	public function fetch_99acre_online_leads(){
-		$url = "http://www.99acres.com/99api/v1/getmy99Response/OeAuXClO43hwseaXEQ/uid/";
+		$url =  "http://www.99acres.com/99api/v1/getmy99Response/OeAuXClO43hwseaXEQ/uid/";
 		$username = "basket.property";
 		$password = "ownplanet789";
-		$start_date = date("Y-m-d", strtotime('yesterday'));
-		$end_date = date("Y-m-d");
-		$request = "<?xml version='1.0'?><query><user_name>$username</user_name><pswd>$password</pswd><start_date>$start_date 00:00:00</start_date><end_date>$end_date 00:00:00</end_date></query>";
+		$start_date = date("Y-m-d 00:00:00", strtotime('yesterday'));
+		$end_date = date("Y-m-d H:i:s");
+
+		//echo $start_date;echo '<br>';echo $end_date;die;
+		$request = "<?xml version='1.0'?><query><user_name>$username</user_name><pswd>$password</pswd><start_date>$start_date</start_date><end_date>$end_date</end_date></query>";
 		$allParams = array('xml'=>$request);
 		$leads = $this->get99AcresLeads($allParams,$url);
 		$data=array();
 		$i=0;
 		$data = simplexml_load_string($leads);
 		$lead_data = array();
+		//print_r($data->Resp);die;
 		if(isset($data->Resp) && count($data->Resp)>0){
 			foreach ($data->Resp as $value) {
 				$notes = (string) $value->QryDtl->QryInfo;
@@ -2194,7 +2197,7 @@ class Admin extends CI_Controller {
 					"project" =>$projectname,
 					"leadid" => $leadid,
 					"notes" => $notes,
-					"lead_date" => date("Y-m-d", strtotime('yesterday'))
+					"lead_date" => date("Y-m-d")
 				);
 				$i++;	
 			}
@@ -2202,6 +2205,10 @@ class Admin extends CI_Controller {
 			//echo $count;die;
 			return array_merge($temp,$count);	
 		}	
+		else
+		{
+			echo "<script>alert('no leads');</script>";
+		}
 		
 		
 	}
