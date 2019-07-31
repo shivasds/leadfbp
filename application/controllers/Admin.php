@@ -2142,7 +2142,7 @@ class Admin extends CI_Controller {
 	public function commonfloor_leads()
 	{
 		$output=array(); 
-		 $leadsdata_magicbrick=$this->commonfloor_leads_api();
+		$leadsdata_magicbrick=$this->commonfloor_leads_api();
 		function xml2array ( $xmlObject, $out = array () )
 		{
    		 foreach ( (array) $xmlObject as $index => $node )
@@ -2160,17 +2160,18 @@ class Admin extends CI_Controller {
 		}
 		$cdata = json_decode(json_encode($cdata), true);
 
+		$this->common_model->save_commonfloor_online_leads($cdata,count($output["cf_lead"]));
+
 	//print_r($cdata);die;
 
 		$data['name'] ="more";
 		$data['heading'] ="Commonfloor Online Callbacks";
-		$this->common_model->save_commonfloor_online_leads($cdata,count($output["cf_lead"]));
 		$where="";
 		$searchVal='';
 		$project='';
 		$fromdate='';
 		$todate='';
-		$lead_source='Magicbricks';
+		$lead_source='Commonfloor';
 		$data['search']=0;
 
 		if($this->input->post()){
@@ -2206,7 +2207,7 @@ class Admin extends CI_Controller {
 			}
 			$data['fromdate']=$fromdate;
 			$data['todate']=$todate;
-		$data['search'] = $this->common_model->search_online_leads($fromdate,$todate,$project,$searchVal,$lead_source,$where);		
+			$data['search'] = $this->common_model->search_online_leads($fromdate,$todate,$project,$searchVal,$lead_source,$where);		
 		}
 		else{
 				if($this->session->userdata('SRCHTXT')){

@@ -447,28 +447,25 @@ class Common_model extends MY_Model {
         }
         function save_commonfloor_online_leads($datalead,$numrows)
         {
-           error_reporting(0);
+
             $source="Commonfloor";
            // print_r($datalead);
            // echo $numrows;echo $datalead[0]['contact_mobile'];
             //die;
             $numrows=$numrows-1;
-            //echo $numrows;die;
             $a=0;
             while ($numrows>=$a) {
                
             foreach ($datalead as $data) {
-               
-                        $phone =$data['contact_mobile'];
+                if(!is_array($data['contact_name']))
+                {
+                    $phone =$data['contact_mobile'];
                         $name=$data['contact_name'];
                         $email=$data['contact_email'];
                         $projectname=$data['project_or_locality_name'];
                         $notes=$data['details'];
                         $lead_date=date("Y-m-d", strtotime($data['shared_on']) );
                         $project_id=$data['seq_id'];
-
-                        
-
                          $query1="select count(*) as count from online_leads where phone='$phone'";
                             $usercount=  $this->db->query($query1);
                             if ( $usercount->num_rows() > 0 )
@@ -483,22 +480,19 @@ class Common_model extends MY_Model {
                                     $this->insert_newproject($projectname,$bid);
                                 else
                                     $this->insert_newproject('commonfloor',$bid);
-                              $query="insert into online_leads(source,name,phone,email,project,leadid,notes,lead_date,project_id) values('$source','$name','$phone','$email','$projectname','$project_id','$notes','$lead_date','$project_id')";
+                            $query="insert into online_leads(source,name,phone,email,project,leadid,notes,lead_date,project_id) values('$source','$name','$phone','$email','$projectname','$project_id','$notes','$lead_date','$project_id')";
+                            //echo $query;
                                 $this->db->query($query);
-
+                                 //$this->db->last_query();die;
                                   }
+
                               }
-                             }
-                            
-
-
-               
-               
+                             }   
+                    
+                }  
+                $a++;            }
             }
 
-                $a++;
-             //  $numrows--;
-            }
            
         }
 
