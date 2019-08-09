@@ -747,6 +747,7 @@ Team Full Basket Property Services Pvt Ltd
                                     foreach ($this->user_model->all_users("type in (1,2,3,4)") as $usr) {
                                         $sel = '';
                                         echo '<option value="'.$usr->id.'">'.$usr->first_name.' '.$usr->last_name.'</option>';
+                                        //tets;
                                     }
                                 }
                                 ?>                             
