@@ -97,7 +97,13 @@
 				<th>Advisor Name</th>
 				<?php foreach ($projectCallbacks as $key => $value) {
 					$name = $this->common_model->get_project_name($key);
+          if(is_numeric($key))
 					echo '<th>'.$name.'</th>';
+        else
+        {
+          $name=$key;
+          echo '<th>'.$name.'</th>';
+        }
 				}
 
 				if($project=='')

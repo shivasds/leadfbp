@@ -2223,7 +2223,8 @@ class Admin extends CI_Controller {
 	public function commonfloor_leads_api()
 	{
 		$start_date=date("Ymd", strtotime('yesterday'));
-		$end_date =  date("Ymd", strtotime(date("y-m-d")));
+		$end_date =  date("Ymd", strtotime('tomorrow'));
+		//echo $end_date;die;
 		$url="https://www.commonfloor.com/agent/pull-leads/v1?id=580f04622b78c&key=fb1aa19d731e10cd&start=".$start_date."&end=".$end_date."";
 		
 		 			$crl = curl_init($url);

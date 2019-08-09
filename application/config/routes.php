@@ -64,6 +64,9 @@ $route['report_bugs'] = 'dashboard/report_bugs';
 $route['view_revenue/:num'] = 'dashboard/view_revenue/:num';
 $route['get_previous_data/:id'] = 'dashboard/get_previous_data/:id';
 $route['login/admin'] = 'login/admin';
+$route['dead_leads'] = 'dashboard/dead_leads';
+
+
 
 $route['callback-details'] 			= 'dashboard/get_callback_details';
 $route['site-visit-report-mail'] 	= 'dashboard/site_visit_report_mail';
@@ -77,3 +80,6 @@ $route['excel/view_callback/(:num)']="ExcelController/view_callback";
 $route['ExcelReportController/(:num)']="ExcelReportController";
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['revenue_approval'] = 'dashboard/revenue_approval';
+

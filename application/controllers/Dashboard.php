@@ -1101,4 +1101,129 @@ class Dashboard extends CI_Controller {
 		else
 			echo 0;
     }
+    public function dead_leads()
+    {
+ini_set('memory_limit', '-1');
+        $data['name'] ="more";
+        $data['heading'] ="All Callbacks";
+        $where =" AND cb.status_id <>5";
+if($this->input->post()){
+            $dept=$this->input->post('dept');
+            $project=$this->input->post('project');
+            $lead_source=$this->input->post('lead_source');
+            $user_name=$this->input->post('user_name');
+            $sub_broker=$this->input->post('sub_broker');
+            $status=$this->input->post('status');
+            $city=$this->input->post('city');
+            $dead_reason=$this->input->post('dead_reason');
+            
+            if($dept!==null){
+                $this->session->set_userdata("department",$dept);
+                if($dept)
+                    $where.=" AND cb.dept_id=".trim($dept);
+            }
+            if($project!==null){
+                $this->session->set_userdata("project",$project);
+                if($project)
+                    $where.=" AND cb.project_id=".trim($project);
+            }
+            if($lead_source!==null){
+                $this->session->set_userdata("lead_source",$lead_source);
+                if($lead_source)
+                    $where.=" AND cb.lead_source_id=".trim($lead_source);
+            }
+            if($user_name!==null){
+                $this->session->set_userdata("search_username",$user_name);
+                if($user_name)
+                    $where.=" AND cb.user_id=".trim($user_name);
+            }
+            if($sub_broker!==null){
+                $this->session->set_userdata("sub_broker",$sub_broker);
+                if($sub_broker)
+                    $where.=" AND cb.broker_id=".trim($sub_broker);
+            }
+            if($status!==null){
+                $this->session->set_userdata("status",$status);
+                if($status)
+                    $where.=" AND cb.status_id=".trim($status);
+            }
+            if($city!==null){
+                $this->session->set_userdata("city",$city);
+                if($city)
+                    $where.=" AND u.city_id=".trim($city);
+            }
+            if($dead_reason!==null){
+                $this->session->set_userdata("dead_reason", $dead_reason);
+                if($dead_reason)
+                    $where.=" AND cb.reason_cause='".trim($dead_reason)."'";
+            }
+            
+            $srxhtxt = trim($this->input->post('srxhtxt'));
+            if($srxhtxt !==null ){
+                $this->session->set_userdata('SRCHTXT', $srxhtxt);  
+                if($srxhtxt)            
+                    $where .=" AND (cb.name='".$srxhtxt."' OR cb.email1='".$srxhtxt."' OR cb.contact_no1='".$srxhtxt."' OR cb.leadid='".$srxhtxt."' OR p.name='".$srxhtxt."' OR ls.name = '".$srxhtxt."' OR concat(u.first_name,' ',u.last_name) ='".$srxhtxt."' OR b.name='".$srxhtxt."')";
+            }
+            $searchDate = $this->input->post('searchDate');
+            if($searchDate  !==null) {
+                $this->session->set_userdata('SRCHDT', $searchDate);
+
+                if($searchDate && $searchDate == 'today')
+                    $where .=" AND cb.due_date like '%".date('Y-m-d')."%'";
+                elseif ($searchDate && $searchDate == 'yesterday') 
+                    $where .=" AND cb.due_date < '".date('Y-m-d')."'";
+                elseif ($searchDate && $searchDate == 'tomorrow') 
+                    $where .=" AND cb.due_date > '".date('Y-m-d')."'";
+            }   
+                    
+        }
+        else{
+            if($this->session->userdata("department"))
+                $where.=" AND cb.dept_id=".trim($this->session->userdata("department"));
+            if($this->session->userdata("project"))
+                $where.=" AND cb.project_id=".trim($this->session->userdata("project"));
+            if($this->session->userdata("lead_source"))
+                $where.=" AND cb.lead_source_id=".trim($this->session->userdata("lead_source"));
+            if($this->session->userdata("search_username"))
+                $where.=" AND cb.user_id=".trim($this->session->userdata("search_username"));
+            if($this->session->userdata("sub_broker"))
+                $where.=" AND cb.broker_id=".trim($this->session->userdata("sub_broker"));
+            if($this->session->userdata("status"))
+                $where.=" AND cb.status_id=".trim($this->session->userdata("status"));
+            if($this->session->userdata("city"))
+                $where.=" AND u.city_id=".trim($this->session->userdata("city"));
+            
+            if($this->session->userdata("dead_reason"))
+                $where.=" AND cb.reason_cause='".trim($this->session->userdata("dead_reason"))."'";
+            
+            if($this->session->userdata('SRCHTXT')){
+                $searchVal = $this->session->userdata('SRCHTXT');
+                $where .=" AND (cb.name='".$searchVal."' OR cb.email1='".$searchVal."' OR cb.contact_no1='".$searchVal."' OR cb.leadid='".$searchVal."' OR p.name='".$searchVal."' OR ls.name = '".$searchVal."' OR concat(u.first_name,' ',u.last_name) ='".$searchVal."' OR b.name='".$searchVal."')";
+            }
+
+            if($this->session->userdata('SRCHDT')!=''){
+                if($this->session->userdata('SRCHDT') == 'today')
+                    $where .=" AND cb.due_date like '%".date('Y-m-d')."%'";
+                elseif ($this->session->userdata('SRCHDT') == 'yesterday') 
+                    $where .=" AND cb.due_date < '".date('Y-m-d')."'";
+                elseif ($this->session->userdata('SRCHDT') == 'tomorrow') 
+                    $where .=" AND cb.due_date > '".date('Y-m-d')."'";
+            }
+        }
+
+        /*if($this->input->post('reset')){
+            $this->session->unset_userdata(['SRCHTXT', 'SRCHDT']);
+            redirect('admin/dead_leads');
+        }*/
+        //------- pagination ------
+        $rowCount               = $this->callback_model->count_search_records(null,$where,$user="admin");
+        $data["totalRecords"]   = $rowCount;
+        $data["links"]          = paginitaion(base_url().'admin/dead_leads/', 3,VIEW_PER_PAGE, $rowCount);
+        $page = $this->uri->segment(3);
+        $offset = !$page ? 0 : $page;
+        //------ End --------------
+        $data['result'] = $this->callback_model->search_callback(null,$where,$offset,VIEW_PER_PAGE);
+
+        $this->load->view('dead_leads',$data);
+    }
 }

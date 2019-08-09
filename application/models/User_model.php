@@ -15,7 +15,20 @@ class User_model extends CI_Model {
             ->order_by('first_name','asc')
             ->order_by('last_name','asc');
         if($where)
+        {
             $this->db->where($where);
+            if($this->session->userdata('user_type')=='City_head')
+        {
+        $ids=array();
+        foreach ($this->session->userdata('user_ids') as $id) {
+        // echo $id->id;
+        $ids[]=$id->id;
+        }
+        $list_id=implode(',', $ids);
+        $this->db->where('id in('.$list_id.')');
+        }
+          
+        }
         $query=$this->db->get();
         return $query->result();
     }
