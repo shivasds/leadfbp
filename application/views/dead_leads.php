@@ -740,31 +740,17 @@ Team Full Basket Property Services Pvt Ltd
                     <div class="row">                         
                         <div class="col-md-6 form-group">
                             <label for="emp_code">User:</label>
-                            <select  class="form-control"  id="user_name" name="user_name" >
-                    <option value="">Select</option>
-                    <?php $all_user= $this->user_model->all_users("type in (1,2,3,4)"); 
-                    foreach( $all_user as $user){ 
-                        switch ($user->type) {
-                            case '1':
-                                $role = "User";
-                                break;
-
-                            case '2':
-                                $role = "Manager";
-                                break;
-
-                            case '3':
-                                $role = "VP";
-                                break;
-                            
-                            case '4':
-                                $role = "Director";
-                                break;
-                        }
-                        ?>
-                        <option value="<?php echo $user->id ?>" <?php if(($this->session->userdata("search_username"))==$user->id) echo 'selected' ?>><?php echo $user->first_name." ".$user->last_name." ($role)"; ?></option>
-                    <?php } ?>
-                </select>
+                            <select  class="form-control"  name="userId" id="userId" required >
+                                <option value="">Select</option>         
+                                <?php
+                                if($this->user_model->all_users("type in (1,2,3,4)")) {
+                                    foreach ($this->user_model->all_users("type in (1,2,3,4)") as $usr) {
+                                        $sel = '';
+                                        echo '<option value="'.$usr->id.'">'.$usr->first_name.' '.$usr->last_name.'</option>';
+                                    }
+                                }
+                                ?>                             
+                            </select>
                         </div>
                         <div class="col-sm-4 form-group">
                             <label for="name">Status:</label>
