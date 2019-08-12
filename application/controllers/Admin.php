@@ -1059,6 +1059,7 @@ class Admin extends CI_Controller {
 					$dept = '';
 					$city = '';
 					$project=$this->input->get('project');
+
 					$this->session->set_userdata("fromTime",$fromTime);
 					$this->session->set_userdata("toTime",$toTime);
 				}
@@ -1066,6 +1067,8 @@ class Admin extends CI_Controller {
 					$dept=$this->input->get('dept');
 					$city=$this->input->get('city');
 					$project=$this->input->get('project');
+					$project=$this->common_model->get_project_id_by_name($project,null);
+					$project=$project['id'];
 					$this->session->set_userdata("report-dept",$dept);
 					$this->session->set_userdata("report-city",$city);
 					$this->session->set_userdata("report-project",$project);

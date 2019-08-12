@@ -542,6 +542,8 @@ class Common_model extends MY_Model {
 
         function get_project_id_by_name($p_name,$bid)
         {
+            if($bid!=null)
+            {
             $this->db->select('id')
                     ->from('project')
                     ->where('name',$p_name)
@@ -551,6 +553,15 @@ class Common_model extends MY_Model {
            // $this->db->query();
             $query=$this->db->get();
             return $query->row_array();
+        }
+        else
+        {
+             $this->db->select('id')
+                    ->from('project')
+                    ->where('name',$p_name);
+            $query=$this->db->get();
+            return $query->row_array();
+        }
 
         }
         function lead_count($sourcename,$date)
